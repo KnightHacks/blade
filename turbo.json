@@ -46,10 +46,9 @@
   },
   "globalEnv": [
     "POSTGRES_URL",
-    "AUTH_DISCORD_ID",
-    "AUTH_DISCORD_SECRET",
-    "AUTH_REDIRECT_PROXY_URL",
-    "AUTH_SECRET",
+    "DISCORD_CLIENT_ID",
+    "DISCORD_CLIENT_SECRET",
+    "DISCORD_CALLBACK_URL",
     "PORT"
   ],
   "globalPassThroughEnv": [
