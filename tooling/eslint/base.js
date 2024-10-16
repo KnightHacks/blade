@@ -55,7 +55,7 @@ export default tseslint.config(
     ],
     rules: {
       "no-console": "error",
-      "prefer-const": ["error", { "ignoreReadBeforeAssign": true }],
+      "prefer-const": ["error", { ignoreReadBeforeAssign: true }],
       ...turboPlugin.configs.recommended.rules,
       "@typescript-eslint/no-unused-vars": [
         "error",
