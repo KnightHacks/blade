@@ -4,11 +4,9 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": {
-      "react-server": "./src/index.rsc.ts",
-      "default": "./src/index.ts"
-    },
-    "./env": "./env.ts"
+    ".": "./src/index.ts",
+    "./oauth": "./src/oauth.ts",
+    "./next": "./src/next.ts"
   },
   "license": "MIT",
   "scripts": {
@@ -21,8 +19,7 @@
     "@acme/db": "workspace:*",
     "@oslojs/crypto": "^1.0.1",
     "@oslojs/encoding": "^1.1.0",
-    "@t3-oss/env-nextjs": "^0.11.1",
-    "artic": "^2.2.5",
+    "arctic": "^1.9.2",
     "next": "^14.2.14",
     "react": "catalog:react18",
     "react-dom": "catalog:react18",
