@@ -1,13 +1,12 @@
 "use client";
 
+import type { AppRouter } from "@blade/api";
 import type { QueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { loggerLink, unstable_httpBatchStreamLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import SuperJSON from "superjson";
-
-import type { AppRouter } from "@acme/api";
 
 import { env } from "~/env";
 import { createQueryClient } from "./query-client";

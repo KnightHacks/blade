@@ -1,5 +1,5 @@
-import { deleteSessionTokenCookie, getCurrentSession } from "@acme/auth/next";
-import { Button } from "@acme/ui/button";
+import { deleteSessionTokenCookie, getCurrentSession } from "@blade/auth/next";
+import { Button } from "@blade/ui/button";
 
 export default async function HomePage() {
   const { user } = await getCurrentSession();

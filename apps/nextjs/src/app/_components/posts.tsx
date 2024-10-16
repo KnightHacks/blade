@@ -1,9 +1,9 @@
 // "use client";
 
-// import type { RouterOutputs } from "@acme/api";
-// import { CreatePostSchema } from "@acme/db/schema";
-// import { cn } from "@acme/ui";
-// import { Button } from "@acme/ui/button";
+// import type { RouterOutputs } from "@blade/api";
+// import { CreatePostSchema } from "@blade/db/schema";
+// import { cn } from "@blade/ui";
+// import { Button } from "@blade/ui/button";
 // import {
 //   Form,
 //   FormControl,
@@ -11,9 +11,9 @@
 //   FormItem,
 //   FormMessage,
 //   useForm,
-// } from "@acme/ui/form";
-// import { Input } from "@acme/ui/input";
-// import { toast } from "@acme/ui/toast";
+// } from "@blade/ui/form";
+// import { Input } from "@blade/ui/input";
+// import { toast } from "@blade/ui/toast";
 
 // import { api } from "~/trpc/react";
 

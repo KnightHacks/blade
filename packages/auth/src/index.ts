@@ -1,13 +1,12 @@
+import type { Session, User } from "@blade/db/schema";
+import { eq } from "@blade/db";
+import { db } from "@blade/db/client";
+import { SessionTable, UserTable } from "@blade/db/schema";
 import { sha256 } from "@oslojs/crypto/sha2";
 import {
   encodeBase32LowerCaseNoPadding,
   encodeHexLowerCase,
 } from "@oslojs/encoding";
-
-import type { Session, User } from "@acme/db/schema";
-import { eq } from "@acme/db";
-import { db } from "@acme/db/client";
-import { SessionTable, UserTable } from "@acme/db/schema";
 
 export function generateSessionToken(): string {
   const bytes = new Uint8Array(20);

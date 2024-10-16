@@ -1,13 +1,12 @@
 import type { OAuth2Tokens } from "arctic";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import { createSession, generateSessionToken } from "@blade/auth";
+import { setSessionTokenCookie } from "@blade/auth/next";
+import { discord } from "@blade/auth/oauth";
+import { db } from "@blade/db/client";
+import { UserTable } from "@blade/db/schema";
 import { ArcticFetchError, OAuth2RequestError } from "arctic";
-
-import { createSession, generateSessionToken } from "@acme/auth";
-import { setSessionTokenCookie } from "@acme/auth/next";
-import { discord } from "@acme/auth/oauth";
-import { db } from "@acme/db/client";
-import { UserTable } from "@acme/db/schema";
 
 export async function GET(request: Request): Promise<Response> {
   const url = new URL(request.url);
