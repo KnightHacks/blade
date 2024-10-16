@@ -4,6 +4,8 @@ import { generateState } from "arctic";
 
 import { env } from "~/env";
 
+export const runtime = "edge";
+
 export function GET() {
   const state = generateState();
   const url = discord.createAuthorizationURL(state, ["identify"]);

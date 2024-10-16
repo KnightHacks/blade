@@ -8,6 +8,8 @@ import { db } from "@blade/db/client";
 import { UserTable } from "@blade/db/schema";
 import { ArcticFetchError, OAuth2RequestError } from "arctic";
 
+export const runtime = "edge";
+
 export async function GET(request: Request): Promise<Response> {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");

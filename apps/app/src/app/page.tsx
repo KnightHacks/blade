@@ -2,6 +2,8 @@ import { deleteSessionTokenCookie, getCurrentSession } from "@blade/auth/next";
 import { db } from "@blade/db/client";
 import { Button } from "@blade/ui/button";
 
+export const runtime = "edge";
+
 export default async function HomePage() {
   const { user } = await getCurrentSession();
 
