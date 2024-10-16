@@ -1,0 +1,48 @@
+name: Deploy App
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "apps/app/**"
+      - ".github/workflows/deploy-app.yml"
+  pull_request:
+    types: [opened, synchronize]
+    branches: [main]
+    paths:
+      - "apps/app/**"
+      - ".github/workflows/app.yml"
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup
+        uses: ./tooling/github/setup
+
+      - name: Build
+        run: pnpm --filter "@blade/app" exec pnpm dlx @cloudflare/next-on-pages@1
+        env:
+          POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
+          DISCORD_CLIENT_ID: ${{ secrets.DISCORD_CLIENT_ID }}
+          DISCORD_CLIENT_SECRET: ${{ secrets.DISCORD_CLIENT_SECRET }}
+          DISCORD_CALLBACK_URL: ${{ secrets.DISCORD_CALLBACK_URL }}
+
+      - name: Deploy
+        id: deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: ./apps/app
+          command: pages deploy .vercel/output/static --project-name=app
+          packageManager: pnpm
+
+      - name: Print Deployment URL
+        env:
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
+        run: echo $DEPLOYMENT_URL
