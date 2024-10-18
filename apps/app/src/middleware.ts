@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { env } from "./env";
+import { env } from "../env";
 
 export function middleware(request: NextRequest) {
   if (request.method === "GET") {
