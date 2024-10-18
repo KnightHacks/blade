@@ -5,8 +5,7 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./oauth": "./src/oauth.ts",
-    "./next": "./src/next.ts"
+    "./env": "./env.ts"
   },
   "license": "MIT",
   "scripts": {
