@@ -45,18 +45,11 @@
     }
   },
   "globalEnv": [
-    "POSTGRES_URL",
     "DISCORD_CLIENT_ID",
     "DISCORD_CLIENT_SECRET",
-    "DISCORD_CALLBACK_URL",
+    "DISCORD_REDIRECT_URL",
+    "AUTH_REDIRECT_PROXY_URL",
     "PORT"
   ],
-  "globalPassThroughEnv": [
-    "NODE_ENV",
-    "CI",
-    "VERCEL",
-    "VERCEL_ENV",
-    "VERCEL_URL",
-    "npm_lifecycle_event"
-  ]
+  "globalPassThroughEnv": ["NODE_ENV", "CI", "npm_lifecycle_event"]
 }
