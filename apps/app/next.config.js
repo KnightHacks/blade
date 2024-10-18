@@ -5,6 +5,10 @@ import { createJiti } from "jiti";
 // Import env files to validate at build time. Use jiti so we can load .ts files in here.
 await createJiti(fileURLToPath(import.meta.url)).import("./env");
 
+if (process.env.NODE_ENV === "development") {
+  setupDevPlatform();
+}
+
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
