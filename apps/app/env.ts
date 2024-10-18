@@ -1,9 +1,9 @@
+import { env as auth } from "@blade/auth/env";
 import { createEnv } from "@t3-oss/env-nextjs";
-import { vercel } from "@t3-oss/env-nextjs/presets";
 import { z } from "zod";
 
 export const env = createEnv({
-  extends: [vercel()],
+  extends: [auth],
   shared: {
     NODE_ENV: z
       .enum(["development", "production", "test"])
@@ -14,7 +14,10 @@ export const env = createEnv({
    * This way you can ensure the app isn't built with invalid env vars.
    */
   server: {
-    POSTGRES_URL: z.string().url(),
+    AUTH_REDIRECT_PROXY_URL: z.string().optional(),
+    DISCORD_CLIENT_ID: z.string(),
+    DISCORD_CLIENT_SECRET: z.string(),
+    DISCORD_REDIRECT_URI: z.string(),
   },
 
   /**
