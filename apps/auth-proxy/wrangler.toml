@@ -1,0 +1,12 @@
+name = "auth-proxy"
+main = "src/index.ts"
+compatibility_date = "2024-10-18"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+DISCORD_CLIENT_ID = '1295493101758189579'
+
+[[d1_databases]]
+binding = "DB"
+database_name = "blade"
+database_id = "ba606b1e-4eba-40ee-90b0-03bef6e21d84"

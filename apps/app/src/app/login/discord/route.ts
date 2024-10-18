@@ -1,11 +1,17 @@
 import { cookies } from "next/headers";
-import { discord } from "@blade/auth/oauth";
-import { generateState } from "arctic";
+import { NextResponse } from "next/server";
+import { Discord, generateState } from "arctic";
+import { env } from "env";
 
-import { env } from "~/env";
+export const runtime = "edge";
 
 export function GET() {
   const state = generateState();
+  const discord = new Discord(
+    env.DISCORD_CLIENT_ID,
+    env.DISCORD_CLIENT_SECRET,
+    env.DISCORD_REDIRECT_URI,
+  );
   const url = discord.createAuthorizationURL(state, ["identify"]);
 
   cookies().set("discord_oauth_state", state, {
@@ -16,10 +22,5 @@ export function GET() {
     sameSite: "lax",
   });
 
-  return new Response(null, {
-    status: 302,
-    headers: {
-      Location: url.toString(),
-    },
-  });
+  return NextResponse.redirect(url, { status: 302 });
 }

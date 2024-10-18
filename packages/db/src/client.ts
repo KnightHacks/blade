@@ -1,12 +1,8 @@
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
+import type { AnyD1Database } from "drizzle-orm/d1";
+import { drizzle } from "drizzle-orm/d1";
 
 import * as schema from "./schema";
 
-if (!process.env.POSTGRES_URL) {
-  throw new Error("Missing DATABASE_URL");
+export function createD1DrizzleClient(db: AnyD1Database) {
+  return drizzle(db, { schema });
 }
-
-const queryClient = postgres(process.env.POSTGRES_URL);
-
-export const db = drizzle(queryClient, { schema });
