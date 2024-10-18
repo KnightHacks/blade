@@ -3,6 +3,8 @@ import { NextResponse } from "next/server";
 import { Discord, generateState } from "arctic";
 import { env } from "env";
 
+export const runtime = "edge";
+
 export function GET() {
   const state = generateState();
   const discord = new Discord(
