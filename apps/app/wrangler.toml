@@ -17,6 +17,10 @@ migrations_dir = "../../packages/db/src/migrations"
 [env.preview]
 name = "app-preview"
 
+[env.preview.vars]
+DISCORD_CLIENT_ID = '1295493101758189579'
+DISCORD_REDIRECT_URI = 'http://auth.knighthacks.org/login/discord/callback'
+
 [[env.preview.d1_databases]]
 binding = "DB"
 database_name = "blade-preview"
