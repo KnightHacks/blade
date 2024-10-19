@@ -5,7 +5,7 @@ import { createSession, generateSessionToken } from "@blade/auth";
 import { createD1DrizzleClient } from "@blade/db/client";
 import { UserTable } from "@blade/db/schema";
 import { getRequestContext } from "@cloudflare/next-on-pages";
-import { ArcticFetchError, Discord, OAuth2RequestError } from "arctic";
+import { Discord } from "arctic";
 import { env } from "env";
 
 export const runtime = "edge";
@@ -108,10 +108,7 @@ export async function GET(request: Request): Promise<Response> {
       path: "/",
     });
   } catch (e) {
-    if (e instanceof OAuth2RequestError) {
-      return NextResponse.json({ error: e.message });
-    }
-    if (e instanceof ArcticFetchError) {
+    if (e instanceof Error) {
       return NextResponse.json({ error: e.message });
     }
   }

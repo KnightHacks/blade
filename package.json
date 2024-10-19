@@ -12,7 +12,7 @@
     "db:init": "turbo -F @blade/db init",
     "db:push": "turbo -F @blade/db push",
     "db:studio": "turbo -F @blade/db studio",
-    "db:generate": "turbo -F @blade/db generate",
+    "db:generate": "turbo -F @blade/db db:gen",
     "db:migrate": "turbo -F @blade/db migrate",
     "db:introspect": "turbo -F @blade/db introspect",
     "dev": "turbo watch dev --continue",

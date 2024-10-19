@@ -1,5 +1,3 @@
--- Current sql file was generated after introspecting the database
--- If you want to run this migration please uncomment this code before executing migrations
 CREATE TABLE `session` (
 	`id` text PRIMARY KEY NOT NULL,
 	`userId` integer NOT NULL,
@@ -8,7 +6,7 @@ CREATE TABLE `session` (
 );
 --> statement-breakpoint
 CREATE TABLE `user` (
-	`id` text PRIMARY KEY NOT NULL,
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`discordId` text(32) NOT NULL,
 	`discordUsername` text(32) NOT NULL
 );

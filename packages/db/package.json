@@ -26,7 +26,7 @@
     "lint": "eslint",
     "push": "pnpm with-env drizzle-kit push",
     "studio": "pnpm with-env drizzle-kit studio",
-    "generate": "pnpm with-env drizzle-kit generate",
+    "db:gen": "pnpm with-env drizzle-kit generate",
     "migrate": "pnpm with-env drizzle-kit migrate",
     "introspect": "pnpm with-env drizzle-kit introspect",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false",
