@@ -13,7 +13,7 @@ export function middleware(request: NextRequest) {
         maxAge: 60 * 60 * 24 * 30,
         sameSite: "lax",
         httpOnly: true,
-        // eslint-disable-next-line no-restricted-properties
+        // eslint-disable-next-line no-restricted-properties -- we can't use the @t3-oss/env-nextjs here
         secure: process.env.NODE_ENV === "production",
       });
     }
