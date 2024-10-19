@@ -3,10 +3,6 @@ compatibility_date = "2024-07-29"
 compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = ".vercel/output/static"
 
-[vars]
-DISCORD_CLIENT_ID = '1295493101758189579'
-DISCORD_REDIRECT_URI = 'http://app.knighthacks.org/login/discord/callback'
-
 [[d1_databases]]
 binding = "DB"
 database_name = "blade"
