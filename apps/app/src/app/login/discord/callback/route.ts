@@ -2,19 +2,16 @@ import type { OAuth2Tokens } from "arctic";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { createSession, generateSessionToken } from "@blade/auth";
-import { createD1DrizzleClient } from "@blade/db/client";
+import { db } from "@blade/db/client";
 import { UserTable } from "@blade/db/schema";
-import { getRequestContext } from "@cloudflare/next-on-pages";
 import { Discord } from "arctic";
 import { env } from "env";
+
+import { setSessionTokenCookie } from "~/app/utils";
 
 export const runtime = "edge";
 
 export async function GET(request: Request): Promise<Response> {
-  const {
-    env: { DB },
-  } = getRequestContext();
-  const db = createD1DrizzleClient(DB);
   const discord = new Discord(
     env.DISCORD_CLIENT_ID,
     env.DISCORD_CLIENT_SECRET,
@@ -69,13 +66,7 @@ export async function GET(request: Request): Promise<Response> {
     if (existingUser) {
       const sessionToken = generateSessionToken();
       const session = await createSession(sessionToken, existingUser.id, db);
-      cookies().set("session", sessionToken, {
-        httpOnly: true,
-        sameSite: "lax",
-        secure: env.NODE_ENV === "production",
-        expires: session.expiresAt,
-        path: "/",
-      });
+      setSessionTokenCookie(sessionToken, session.expiresAt);
       return NextResponse.redirect(new URL("/", request.url));
     }
 
@@ -100,13 +91,7 @@ export async function GET(request: Request): Promise<Response> {
 
     const sessionToken = generateSessionToken();
     const session = await createSession(sessionToken, user.id, db);
-    cookies().set("session", sessionToken, {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: env.NODE_ENV === "production",
-      expires: session.expiresAt,
-      path: "/",
-    });
+    setSessionTokenCookie(sessionToken, session.expiresAt);
   } catch (e) {
     if (e instanceof Error) {
       return NextResponse.json({ error: e.message });
