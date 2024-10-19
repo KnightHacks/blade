@@ -1,10 +1,6 @@
 import type { NextRequest } from "next/server";
 import { appRouter, createTRPCContext } from "@blade/api";
-import { createD1DrizzleClient } from "@blade/db/client";
-import { getRequestContext } from "@cloudflare/next-on-pages";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
-
-export const runtime = "edge";
 
 /**
  * Configure basic CORS headers
@@ -30,15 +26,10 @@ const handler = async (req: NextRequest) => {
     endpoint: "/api/trpc",
     router: appRouter,
     req,
-    createContext: () => {
-      const {
-        env: { DB },
-      } = getRequestContext();
-      return createTRPCContext({
+    createContext: () =>
+      createTRPCContext({
         headers: req.headers,
-        db: createD1DrizzleClient(DB),
-      });
-    },
+      }),
     onError({ error, path }) {
       // eslint-disable-next-line no-console -- we want to log errors
       console.error(`>>> tRPC Error on '${path}'`, error);

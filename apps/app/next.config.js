@@ -1,13 +1,8 @@
 import { fileURLToPath } from "url";
-import { setupDevPlatform } from "@cloudflare/next-on-pages/next-dev";
 import { createJiti } from "jiti";
 
 // Import env files to validate at build time. Use jiti so we can load .ts files in here.
-await createJiti(fileURLToPath(import.meta.url)).import("./env");
-
-if (process.env.NODE_ENV === "development") {
-  setupDevPlatform();
-}
+await createJiti(fileURLToPath(import.meta.url)).import("./src/env");
 
 /** @type {import("next").NextConfig} */
 const config = {

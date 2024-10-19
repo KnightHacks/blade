@@ -8,8 +8,8 @@
  * tl;dr - this is where all the tRPC server stuff is created and plugged in.
  * The pieces you will need to use are documented accordingly near the end
  */
-import type { createD1DrizzleClient } from "@blade/db/client";
 import { validateSession } from "@blade/auth";
+import { db } from "@blade/db/client";
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
@@ -26,26 +26,23 @@ import { ZodError } from "zod";
  *
  * @see https://trpc.io/docs/server/context
  */
-export const createTRPCContext = async (opts: {
-  headers: Headers;
-  db: ReturnType<typeof createD1DrizzleClient>;
-}) => {
+export const createTRPCContext = async (opts: { headers: Headers }) => {
   const token = opts.headers.get("Authorization");
   if (!token) {
     return {
       session: { user: null },
-      db: opts.db,
+      db,
       token: null,
     };
   }
-  const session = await validateSession(token, opts.db);
+  const session = await validateSession(token);
 
   const source = opts.headers.get("x-trpc-source") ?? "unknown";
   console.log(">>> tRPC Request from", source, "by", session.user);
 
   return {
     session,
-    db: opts.db,
+    db,
     token,
   };
 };

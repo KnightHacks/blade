@@ -27,7 +27,6 @@
     "@blade/prettier-config": "workspace:*",
     "@blade/tsconfig": "workspace:*",
     "eslint": "catalog:",
-    "eslint-plugin-next-on-pages": "^1.13.5",
     "prettier": "catalog:",
     "typescript": "catalog:"
   },

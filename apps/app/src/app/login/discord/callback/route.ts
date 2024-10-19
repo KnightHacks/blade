@@ -2,24 +2,13 @@ import type { OAuth2Tokens } from "arctic";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { createSession, generateSessionToken } from "@blade/auth";
-import { createD1DrizzleClient } from "@blade/db/client";
+import { setSessionTokenCookie } from "@blade/auth/next";
+import { discord } from "@blade/auth/oauth";
+import { db } from "@blade/db/client";
 import { UserTable } from "@blade/db/schema";
-import { getRequestContext } from "@cloudflare/next-on-pages";
-import { ArcticFetchError, Discord, OAuth2RequestError } from "arctic";
-import { env } from "env";
-
-export const runtime = "edge";
+import { ArcticFetchError, OAuth2RequestError } from "arctic";
 
 export async function GET(request: Request): Promise<Response> {
-  const {
-    env: { DB },
-  } = getRequestContext();
-  const db = createD1DrizzleClient(DB);
-  const discord = new Discord(
-    env.DISCORD_CLIENT_ID,
-    env.DISCORD_CLIENT_SECRET,
-    env.DISCORD_REDIRECT_URI,
-  );
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
   const state = url.searchParams.get("state");
@@ -54,10 +43,10 @@ export async function GET(request: Request): Promise<Response> {
       },
     );
 
-    const discordUser: {
+    const discordUser = (await discordUserResponse.json()) as {
       id: string;
       username: string;
-    } = await discordUserResponse.json();
+    };
 
     const discordUserId = discordUser.id;
     const discordUsername = discordUser.username;
@@ -68,14 +57,8 @@ export async function GET(request: Request): Promise<Response> {
 
     if (existingUser) {
       const sessionToken = generateSessionToken();
-      const session = await createSession(sessionToken, existingUser.id, db);
-      cookies().set("session", sessionToken, {
-        httpOnly: true,
-        sameSite: "lax",
-        secure: env.NODE_ENV === "production",
-        expires: session.expiresAt,
-        path: "/",
-      });
+      const session = await createSession(sessionToken, existingUser.id);
+      setSessionTokenCookie(sessionToken, session.expiresAt);
       return NextResponse.redirect(new URL("/", request.url));
     }
 
@@ -99,14 +82,8 @@ export async function GET(request: Request): Promise<Response> {
     }
 
     const sessionToken = generateSessionToken();
-    const session = await createSession(sessionToken, user.id, db);
-    cookies().set("session", sessionToken, {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: env.NODE_ENV === "production",
-      expires: session.expiresAt,
-      path: "/",
-    });
+    const session = await createSession(sessionToken, user.id);
+    setSessionTokenCookie(sessionToken, session.expiresAt);
   } catch (e) {
     if (e instanceof OAuth2RequestError) {
       return NextResponse.json({ error: e.message });

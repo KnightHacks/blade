@@ -1,6 +1,8 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
+import { env } from "./env";
+
 export function middleware(request: NextRequest) {
   if (request.method === "GET") {
     const response = NextResponse.next();
@@ -13,8 +15,7 @@ export function middleware(request: NextRequest) {
         maxAge: 60 * 60 * 24 * 30,
         sameSite: "lax",
         httpOnly: true,
-        // eslint-disable-next-line no-restricted-properties
-        secure: process.env.NODE_ENV === "production",
+        secure: env.NODE_ENV === "production",
       });
     }
     return response;

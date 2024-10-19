@@ -2,8 +2,6 @@ import type { AppRouter } from "@blade/api";
 import { cache } from "react";
 import { headers } from "next/headers";
 import { createCaller, createTRPCContext } from "@blade/api";
-import { createD1DrizzleClient } from "@blade/db/client";
-import { getRequestContext } from "@cloudflare/next-on-pages";
 import { createHydrationHelpers } from "@trpc/react-query/rsc";
 
 import { createQueryClient } from "./query-client";
@@ -14,15 +12,10 @@ import { createQueryClient } from "./query-client";
  */
 const createContext = cache(async () => {
   const heads = new Headers(headers());
-  const {
-    env: { DB },
-  } = getRequestContext();
-  const db = createD1DrizzleClient(DB);
   heads.set("x-trpc-source", "rsc");
 
   return createTRPCContext({
     headers: heads,
-    db,
   });
 });
 
