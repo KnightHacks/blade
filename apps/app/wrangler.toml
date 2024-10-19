@@ -5,7 +5,7 @@ pages_build_output_dir = ".vercel/output/static"
 
 [vars]
 DISCORD_CLIENT_ID = '1295493101758189579'
-AUTH_REDIRECT_PROXY_URL = 'http://localhost:3000/login/discord/callback'
+DISCORD_REDIRECT_URI = 'http://app.knighthacks.org/login/discord/callback'
 
 [[d1_databases]]
 binding = "DB"
