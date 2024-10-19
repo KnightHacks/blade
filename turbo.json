@@ -39,7 +39,7 @@
       "cache": false,
       "persistent": true
     },
-    "generate": {
+    "db:gen": {
       "cache": false,
       "interactive": true
     },
