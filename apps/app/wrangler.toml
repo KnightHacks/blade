@@ -23,7 +23,7 @@ DISCORD_REDIRECT_URI = 'http://auth.knighthacks.org/login/discord/callback'
 
 [[env.preview.d1_databases]]
 binding = "DB"
-database_name = "blade-preview"
-database_id = "3b07702c-02b6-4e78-901e-c6399e016222"
+database_name = "blade"
+database_id = "ba606b1e-4eba-40ee-90b0-03bef6e21d84"
 preview_database_id = "DB"
 migrations_dir = "../../packages/db/src/migrations"
