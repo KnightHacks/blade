@@ -1,9 +1,7 @@
-import { env as auth } from "@blade/auth/env";
 import { createEnv } from "@t3-oss/env-nextjs";
 import { z } from "zod";
 
 export const env = createEnv({
-  extends: [auth],
   shared: {
     NODE_ENV: z
       .enum(["development", "production", "test"])
@@ -18,6 +16,7 @@ export const env = createEnv({
     DISCORD_CLIENT_ID: z.string(),
     DISCORD_CLIENT_SECRET: z.string(),
     DISCORD_REDIRECT_URI: z.string(),
+    NODE_ENV: z.enum(["development", "production"]).optional(),
   },
 
   /**
