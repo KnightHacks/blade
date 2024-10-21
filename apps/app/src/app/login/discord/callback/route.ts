@@ -1,13 +1,15 @@
 import type { OAuth2Tokens } from "arctic";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { createSession, generateSessionToken } from "@blade/auth";
+import {
+  createSession,
+  generateSessionToken,
+  setSessionTokenCookie,
+} from "@blade/auth";
 import { db } from "@blade/db/client";
 import { UserTable } from "@blade/db/schema";
 import { Discord } from "arctic";
 import { env } from "env";
-
-import { setSessionTokenCookie } from "~/app/utils";
 
 export const runtime = "edge";
 
@@ -65,7 +67,7 @@ export async function GET(request: Request): Promise<Response> {
 
     if (existingUser) {
       const sessionToken = generateSessionToken();
-      const session = await createSession(sessionToken, existingUser.id, db);
+      const session = await createSession(sessionToken, existingUser.id);
       setSessionTokenCookie(sessionToken, session.expiresAt);
       return NextResponse.redirect(new URL("/", request.url));
     }
@@ -90,7 +92,7 @@ export async function GET(request: Request): Promise<Response> {
     }
 
     const sessionToken = generateSessionToken();
-    const session = await createSession(sessionToken, user.id, db);
+    const session = await createSession(sessionToken, user.id);
     setSessionTokenCookie(sessionToken, session.expiresAt);
   } catch (e) {
     if (e instanceof Error) {
