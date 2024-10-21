@@ -1,13 +1,22 @@
-import { db } from "@blade/db/client";
+import {
+  deleteSessionTokenCookie,
+  getCurrentSession,
+  invalidateSession,
+} from "@blade/auth";
 import { Button } from "@blade/ui/button";
 
-import { deleteSessionTokenCookie, getCurrentSession } from "./utils";
+import { api } from "~/trpc/server";
 
 export const runtime = "edge";
 
 export default async function HomePage() {
   const { session } = await getCurrentSession();
-  const users = await db.query.UserTable.findMany();
+  let secret: string;
+  try {
+    secret = await api.auth.getSecretMessage();
+  } catch {
+    secret = "you are not allowed to see the secret message!";
+  }
   return (
     <main>
       {session === null ? (
@@ -15,9 +24,9 @@ export default async function HomePage() {
       ) : (
         <form>
           <Button
-            // eslint-disable-next-line @typescript-eslint/require-await -- form actions must be async
             formAction={async () => {
               "use server";
+              await invalidateSession(session.id);
               deleteSessionTokenCookie();
             }}
           >
@@ -25,7 +34,7 @@ export default async function HomePage() {
           </Button>
         </form>
       )}
-      <div>{JSON.stringify(users)}</div>
+      <div>{secret}</div>
     </main>
   );
 }
