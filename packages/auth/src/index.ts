@@ -1,6 +1,8 @@
-import type { createD1DrizzleClient } from "@blade/db/client";
 import type { Session, User } from "@blade/db/schema";
+import { cache } from "react";
+import { cookies } from "next/headers";
 import { eq } from "@blade/db";
+import { db } from "@blade/db/client";
 import { SessionTable, UserTable } from "@blade/db/schema";
 import { sha256 } from "@oslojs/crypto/sha2";
 import {
@@ -18,7 +20,6 @@ export function generateSessionToken(): string {
 export async function createSession(
   token: string,
   userId: number,
-  db: ReturnType<typeof createD1DrizzleClient>,
 ): Promise<Session> {
   const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
   const session: Session = {
@@ -32,7 +33,6 @@ export async function createSession(
 
 export async function validateSession(
   token: string,
-  db: ReturnType<typeof createD1DrizzleClient>,
 ): Promise<SessionValidationResult> {
   const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
   const result = await db
@@ -64,7 +64,6 @@ export async function validateSession(
 
 export async function validateSessionToken(
   token: string,
-  db: ReturnType<typeof createD1DrizzleClient>,
 ): Promise<SessionValidationResult> {
   const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
   const result = await db
@@ -92,12 +91,39 @@ export async function validateSessionToken(
   return { session, user };
 }
 
-export async function invalidateSession(
-  token: string,
-  db: ReturnType<typeof createD1DrizzleClient>,
-): Promise<void> {
-  const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
+export async function invalidateSession(sessionId: string): Promise<void> {
   await db.delete(SessionTable).where(eq(SessionTable.id, sessionId));
+}
+
+export const getCurrentSession = cache(
+  async (): Promise<SessionValidationResult> => {
+    const token = cookies().get("session")?.value ?? null;
+    if (token === null) {
+      return { session: null, user: null };
+    }
+    const result = await validateSessionToken(token);
+    return result;
+  },
+);
+
+export function setSessionTokenCookie(token: string, expiresAt: Date): void {
+  cookies().set("session", token, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    expires: expiresAt,
+    path: "/",
+  });
+}
+
+export function deleteSessionTokenCookie(): void {
+  cookies().set("session", "", {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 0,
+    path: "/",
+  });
 }
 
 export type SessionValidationResult =
