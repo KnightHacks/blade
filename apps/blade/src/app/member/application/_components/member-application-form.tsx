@@ -34,6 +34,7 @@ import { toast } from "@forge/ui/toast";
 import { api } from "~/trpc/react";
 
 export function MemberApplicationForm() {
+  const MAX_RESUME_SIZE = 5 * 1000000; // 5MB
   const createMember = api.member.createMember.useMutation({
     onSuccess() {
       toast.success("Application submitted successfully!");
@@ -94,6 +95,18 @@ export function MemberApplicationForm() {
                 message: "Resume must be a PDF",
               });
             }
+          }
+
+          // Validate file size is <= 5MB
+          if (fileList[0].size > MAX_RESUME_SIZE) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.too_big,
+              type: "number",
+              maximum: MAX_RESUME_SIZE,
+              inclusive: true,
+              exact: false,
+              message: "File too large: maximum 5MB",
+            });
           }
         })
         .optional(),
